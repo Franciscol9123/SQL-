@@ -1,0 +1,60 @@
+CREATE table famous_people (id INTEGER PRIMARY KEY, name TEXT, age INTEGER);
+
+INSERT INTO famous_people VALUES (1, 'Tom cruise', 60);
+INSERT INTO famous_people VALUES (2,'Tom Hanks', 66);
+INSERT INTO famous_people VALUES (3,'John Williams', 90);
+INSERT INTO famous_people VALUES (4,'Hans Zimmer', 65);
+INSERT INTO famous_people VALUES (5,'Greta Gerwig', 39); 
+INSERT INTO famous_people VALUES (6,'Jennifer lawrence', 32); 
+INSERT INTO famous_people VALUES (7, 'Viola Davis', 57);
+INSERT INTO famous_people VALUES (8,'ludwig göransson', 38); 
+INSERT INTO famous_people VALUES (9,'Jon Favreau', 56);
+INSERT INTO famous_people VALUES (10, 'Denzel Washington', 68);
+INSERT INTO famous_people VALUES (11, 'Steven Speilberg', 76);
+
+CREATE table known_for (id INTEGER PRIMARY KEY, famous_person_id INTEGER, role TEXT, famous_film TEXT); 
+
+INSERT INTO known_for VALUES (1, 1, 'actor', 'Minority Report');
+INSERT INTO known_for VALUES (2, 2, 'actor', 'Catch Me If You Can');
+INSERT INTO known_for VALUES (3, 3, 'composer', 'Star Wars');
+INSERT INTO known_for VALUES (4, 3, 'composer', 'Minority Report');
+INSERT INTO known_for VALUES (5, 3, 'composer', 'Catch Me If You Can');
+INSERT INTO known_for VALUES (6, 4, 'composer', 'The Lion King');
+INSERT INTO known_for VALUES (7, 5, 'actor', '20th century women');
+INSERT INTO known_for VALUES (8, 5, 'director', 'Lady Bird');
+INSERT INTO known_for VALUES (9, 6, 'actor', 'Winters Bone');
+INSERT INTO known_for VALUES (10, 7, 'actor', 'Fences');
+INSERT INTO known_for VALUES (11, 8, 'composer', 'Mandalorian');
+INSERT INTO known_for VALUES (12, 8, 'composer', 'Black Panther');
+INSERT INTO known_for VALUES (13, 9, 'director', 'Mandalorian');
+INSERT INTO known_for VALUES (14, 9, 'actor', 'The Lion King');
+INSERT INTO known_for VALUES (15, 10, 'actor', 'Fences');
+INSERT INTO known_for VALUES (16, 10, 'director', 'Fences');
+INSERT INTO known_for VALUES (17, 11, 'director', 'Minority Report');
+INSERT INTO known_for VALUES (18, 11, 'director', 'Catch Me If You Can');
+
+SELECT * FROM famous_people JOIN known_for ON famous_people.id=known_for.famous_person_id;
+
+SELECT fp.name, kf.role, kf.famous_film FROM famous_people AS fp INNER Join known_for AS kf ON fp.id=kf.famous_person_id ORDER BY role;
+
+SELECT fp.name, kf.role FROM famous_people AS fp INNER Join known_for AS kf ON fp.id=kf.famous_person_id WHERE fp.name= 'Denzel Washington';
+
+SELECT fp.name, fp.age, kf.role FROM famous_people AS fp INNER Join known_for AS kf ON fp.id=kf.famous_person_id WHERE fp.age > 60 ORDER BY fp.age;
+
+SELECT fp.name, fp.age, kf.role FROM famous_people AS fp INNER Join known_for AS kf ON fp.id=kf.famous_person_id WHERE fp.age < 60 ORDER BY fp.age;
+
+SELECT fp.name, fp.age, kf.role, kf.famous_film FROM famous_people AS fp JOIN known_for AS kf ON fp.id=kf.famous_person_id WHERE kf.famous_film= 'Catch Me If You Can' ORDER BY role;
+
+SELECT fp.name, fp.age, kf.role, kf.famous_film FROM famous_people AS fp JOIN known_for AS kf ON fp.id=kf.famous_person_id WHERE kf.famous_film= 'Minority Report';
+
+SELECT fp.name, fp.age,kf.role, kf.famous_film FROM famous_people AS fp JOIN known_for AS kf ON fp.id=kf.famous_person_id WHERE kf.famous_film= 'Fences';
+
+SELECT Count(age) as Total_per_Gen,
+CASE
+        WHEN age>=78 THEN 'Silent Generation'
+        WHEN age>=59 THEN 'Baby boomers'
+        WHEN age>=43 THEN 'Gen X'
+        WHEN age>=27 THEN 'Millenials'
+        ELSE 'Gen Z'
+        END 'Generations'
+FROM famous_people GROUP BY Generations;
