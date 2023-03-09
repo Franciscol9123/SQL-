@@ -36,13 +36,13 @@ artist_name
 ,avg(danceability)
 ,avg(energy)
 FROM BIT_DB.spotifydata
-GROUP BY artist_name, track_name
+GROUP BY artist_name, track_name;
 
 #Then I determined who the Top 10 artists are by popularity
 SELECT track_name, artist_name, popularity
 FROM BIT_DB.spotifydata
 ORDER BY popularity desc
-LIMIT 10
+LIMIT 10;
 
 #I then determind the top ten loudest tracks
 SELECT artist_name, track_name, loudness 
@@ -51,3 +51,13 @@ ORDER BY loudness desc limit 10;
 
 #The longest song by total minutes
 SELECT artist_name, track_name, duration_ms/60000 AS Minutes FROM BIT_DB.Spotifydata ORDER BY duration_ms desc LIMIT 1;
+
+#Calculate the average popularity for the artists in the Spotify data table with an average popularity of 90 labeled as a “Top Star”.
+WITH temptable_CTE AS 
+(SELECT s.artist_name,
+AVG(s.popularity) AS Average_Popularity
+FROM Spotifydata s
+GROUP BY s.artist_name)
+SELECT artist_name, Average_Popularity, 'TOP STAR' AS tag 
+FROM temptable_CTE
+WHERE Average_Popularity>=90;
